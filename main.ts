@@ -1,4 +1,4 @@
-import { App, Modal, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Plugin, PluginSettingTab } from 'obsidian';
 import { BreadcrumbGraphProvider } from './src/graph/breadcrumb-graph-provider';
 import './src/utils/breadcrumbs-global-api';
 import { GraphLeaf, GraphQuery } from './src/utils/graph-internals';
@@ -10,7 +10,7 @@ interface BetterGraphViewSettings {
 const DEFAULT_SETTINGS: BetterGraphViewSettings = {
 }
 
-const EDGE_OPERATOR_REGEX = /(?<=^| )edge:([^ ]*)/gm;
+const EDGE_OPERATOR_REGEX = /(?<=^| )-?edge:([^ ]*)/gm;
 
 export default class BetterGraphViewPlugin extends Plugin {
     settings: BetterGraphViewSettings;
@@ -21,14 +21,24 @@ export default class BetterGraphViewPlugin extends Plugin {
 
     inject_metadataResolver(graphLeaf: GraphLeaf) {
         const customCache = new BreadcrumbGraphProvider();
-        let currentFilter: string | undefined | null = null;
-        let currentFilterByType: string[] | undefined | null = null;
-        const updateCustomCache = () => customCache.updateCache(currentFilterByType);
+        let currentFilter: {
+            queryText?: string | null,
+            edgeTypes?: string[] | null,
+            negate: boolean,
+        } = {
+            queryText: null,
+            edgeTypes: null,
+            negate: false,
+        };
+        const updateCustomCache = () => customCache.updateCache(currentFilter.edgeTypes, currentFilter.negate);
 
-        const setEdgeFilter = (newFilter: string | undefined | null) => {
-            if (currentFilter !== newFilter) {
-                currentFilter = newFilter;
-                currentFilterByType = newFilter?.split(",");
+        const setEdgeFilter = (newFilter: string | undefined | null, negate: boolean) => {
+            if (currentFilter.queryText !== newFilter || currentFilter.negate !== negate) {
+                currentFilter = {
+                    queryText: newFilter,
+                    edgeTypes: newFilter?.split(","),
+                    negate
+                };
                 updateCustomCache();
             }
         };
@@ -45,18 +55,19 @@ export default class BetterGraphViewPlugin extends Plugin {
                 const match = originalQuery.matchAll(EDGE_OPERATOR_REGEX);
                 if (match) {
                     const matchArray = Array.from(match);
-                    let edgeQuery: string | undefined | null = matchArray.last()?.at(1);
+                    const lastMatch = matchArray.last();
+                    let edgeQuery: string | undefined | null = lastMatch?.at(1);
                     if (edgeQuery === "*") {
                         edgeQuery = null;
                     }
-                    setEdgeFilter(edgeQuery)
+                    setEdgeFilter(edgeQuery, lastMatch?.at(0)?.startsWith("-") || false)
 
                     // Strip the "edge:" operator from the query before passing
                     // it on to the built-in search query parser to avoid errors.
                     const modifiedQuery = originalQuery.replace(EDGE_OPERATOR_REGEX, "");
                     query[0].query = modifiedQuery;
                 } else {
-                    setEdgeFilter(null);
+                    setEdgeFilter(null, false);
                 }
             }
             _setQuery.call(dataEngine, query);
