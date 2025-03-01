@@ -17,10 +17,10 @@ This plugin hijacks the internal graph view implementation and extends it with n
   - 🚧: Provides a JavaScript API usable from other plugins.
 
 - Labeling of nodes
-  - 🚧: Displaying labels on nodes based on file names or custom frontmatter attributes.
+  - ✅: Displaying labels on nodes based on `title` attribute from frontmatter instead of file name.
   - 🚧: Visibility of node labels can be toggled.
-  - 🚧: Customizable node size via frontmatter attributes
-  - 🚧: Customizable node colors via customizable rules
+  - ~~✅: Customizable node size via frontmatter attributes.~~ Already provided by [Custom Node Size](https://github.com/jackvonhouse/custom-node-size) plugin.
+  - ~~✅: Customizable node colors via customizable rules.~~ Already provided by the built-in Graph plugin.
 
 - Labeling of edges
   - 🚧: Display labels on edges based on the relationship source (e.g. the frontmatter attribute name).

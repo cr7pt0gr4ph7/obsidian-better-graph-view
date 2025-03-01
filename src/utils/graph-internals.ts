@@ -3,6 +3,7 @@
 // by any means (and not intended to be) but complete enough *for us*.
 
 import { App, View, WorkspaceLeaf } from "obsidian";
+import { BreadcrumbGraphProvider } from "src/graph/breadcrumb-graph-provider";
 
 export type GraphNodeId = string;
 export type GraphLinkCount = number;
@@ -35,5 +36,20 @@ export interface GraphDataEngine {
 
 export interface GraphRenderer {
     setData(data: GraphData): void;
-    _setData?: (data: GraphData) => void;
+    __setData?: (data: GraphData) => void;
+
+    nodes: GraphNodeComponent[];
+    links: GraphLinkComponent[];
+    customGraphProvider?: BreadcrumbGraphProvider;
+}
+
+export interface GraphLinkComponent {
+    renderer: GraphRenderer;
+}
+
+export interface GraphNodeComponent {
+    id: string;
+    renderer: GraphRenderer;
+    getDisplayText(): string;
+    _getDisplayText?: () => string;
 }
