@@ -10,7 +10,7 @@ export type GraphData = {
     nodes: Record<GraphNodeId, Record<GraphNodeId, GraphLinkCount>>;
 }
 
-export type GraphLeaf  = {
+export type GraphLeaf = {
     view: GraphView;
 } & WorkspaceLeaf;
 
@@ -20,9 +20,16 @@ export type GraphView = {
     update(): void;
 } & View;
 
+export type GraphQuery = {
+    query: string;
+    color?: { a: number; rgb: number } | null;
+}
+
 export interface GraphDataEngine {
     app: App;
     _app?: App;
+    setQuery(query: GraphQuery[]): void;
+    _setQuery?: (query: GraphQuery[]) => void;
     render(): void;
 }
 

@@ -13,13 +13,13 @@ export class BreadcrumbGraphProvider {
         window.BCAPI.refresh();
     }
 
-    updateCache(filterByType?: string[]) {
+    updateCache(filterByType: string[] | undefined | null) {
         const graph = window.BCAPI.plugin.graph;
         const resolvedByPage: typeof this.resolvedLinks = {};
         const unresolvedByPage: typeof this.unresolvedLinks = {};
 
         const edgeFilter = (edge: BCEdge) => {
-            return !filterByType || filterByType.length == 0 || filterByType.some(x => x === edge.attr.field);
+            return !filterByType || filterByType.some(x => x === edge.attr.field);
         };
 
         graph.nodes().forEach(source_id => {
