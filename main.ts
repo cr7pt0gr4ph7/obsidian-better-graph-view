@@ -1,7 +1,7 @@
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 import { BreadcrumbGraphProvider } from './src/graph/breadcrumb-graph-provider';
 import './src/utils/breadcrumbs-global-api';
-import { GraphLeaf, GraphLinkComponent, GraphNodeComponent, GraphQuery } from './src/utils/graph-internals';
+import { GraphLeaf, GraphLinkComponent, GraphNodeComponent, GraphQuery, GraphRenderer } from './src/utils/graph-internals';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BetterGraphViewSettings {
@@ -102,9 +102,13 @@ export default class BetterGraphViewPlugin extends Plugin {
 
         renderer.customGraphProvider = customCache;
         renderer.__setData || (renderer.__setData = renderer.setData);
-        renderer.setData = function (data) {
-            this.__setData(data);
+        renderer.setData = function (this: GraphRenderer, data) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.__setData!(data);
             plugin.inject_graphComponentRendering(graphLeaf);
+            for (const node of this.nodes) {
+                node.text.text = node.getDisplayText();
+            }
         };
 
         //

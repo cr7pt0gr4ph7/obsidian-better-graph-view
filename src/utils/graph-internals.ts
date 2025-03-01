@@ -50,6 +50,11 @@ export interface GraphLinkComponent {
 export interface GraphNodeComponent {
     id: string;
     renderer: GraphRenderer;
+    text: PixiText;
     getDisplayText(): string;
     _getDisplayText?: () => string;
+}
+
+export interface PixiText {
+    text: string;
 }

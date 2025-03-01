@@ -40,7 +40,8 @@ export class BreadcrumbGraphProvider {
             const resolved: PageLinks = {};
             const unresolved: PageLinks = {};
 
-            const titleFromFrontmatter = this.app.metadataCache.getCache(source_id)?.frontmatter?.title;
+            const frontmatter = this.app.metadataCache.getCache(source_id)?.frontmatter;
+            const titleFromFrontmatter = frontmatter?.node_title ?? frontmatter?.title;
             if (titleFromFrontmatter) {
                 const title = typeof titleFromFrontmatter === "string" ? titleFromFrontmatter : `${titleFromFrontmatter}`;
                 if (title.length > 0) {
