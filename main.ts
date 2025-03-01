@@ -141,7 +141,7 @@ export default class BetterGraphViewPlugin extends Plugin {
         this.registerEvent(
             this.app.workspace.on("layout-change", () => {
                 for (const leaf of this.getGraphLeaves()) {
-                    if (leaf.view.renderer._setData === void 0) {
+                    if (leaf.view.dataEngine._app === void 0) {
                         this.inject_metadataResolver(leaf);
                     }
                 }
