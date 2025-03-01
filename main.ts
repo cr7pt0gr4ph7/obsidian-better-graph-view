@@ -107,7 +107,7 @@ export default class BetterGraphViewPlugin extends Plugin {
             this.__setData!(data);
             plugin.inject_graphComponentRendering(graphLeaf);
             for (const node of this.nodes) {
-                node.text.text = node.getDisplayText();
+                node.text && (node.text.text = node.getDisplayText());
             }
         };
 

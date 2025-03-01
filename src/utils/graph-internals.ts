@@ -45,12 +45,14 @@ export interface GraphRenderer {
 
 export interface GraphLinkComponent {
     renderer: GraphRenderer;
+    rendered: boolean;
 }
 
 export interface GraphNodeComponent {
     id: string;
     renderer: GraphRenderer;
-    text: PixiText;
+    text?: PixiText;
+    rendered: boolean;
     getDisplayText(): string;
     _getDisplayText?: () => string;
 }
