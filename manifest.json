@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "obsidian-better-graph-view",
+	"name": "Better Graph View",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Enhances the built-in Graph view with options for filtering edges.",
+	"author": "Lukas Waslowski",
+	"authorUrl": "https://github.com/cr7pt0gr4ph7",
+	"repositoryUrl": "https://github.com/cr7pt0gr4ph7/better-graph-view",
 	"isDesktopOnly": false
 }

@@ -1,16 +1,19 @@
 # Better Graph View Plugin for Obsidian
 
+> [!IMPORTANT]
+> Because this plugin messes with the internals of the built-in Graph plugin,
+> it might break on future versions of Obsidian.
+
 The integrated [Graph plugin](https://help.obsidian.md/plugins/graph) for [Obsidian](https://obsidian.md) is great,
 but is missing a few important features for working with highly interconnected graphs.
+This plugin hijacks the internal graph view implementation and extends it with new features.
 
-🛠️: Currently in development | 🚧: Planned
-
-- Force-directed interactive graph layout (like the official Graph plugin) based on the [`force-graph`](https://github.com/vasturiano/force-graph) library.
+✅: Implemented | 🛠️: Currently in development | 🚧: Planned (but not yet implemented)
 
 - Data Sources
   - 🚧: Works with plain Obsidian installation (but does not provide edge annotation or filtering in that case).
-  - 🚧: Integration with the [Dataview]() plugin to annotate edges with attribute names.
-  - 🚧: Integration with the [Breadcrumbs]() plugin to derive implicit edges for a more complete graph.
+  - 🚧: Integration with the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin to annotate edges with attribute names.
+  - ✅: Integration with the [Breadcrumbs](https://publish.obsidian.md/breadcrumbs-docs/Home) plugin to derive implicit edges for a more complete graph.
   - 🚧: Provides a JavaScript API usable from other plugins.
 
 - Labeling of nodes
@@ -25,6 +28,7 @@ but is missing a few important features for working with highly interconnected g
   - 🚧: Customizable edge colors.
 
 - Filtering
+  - ✅: Filtering of edges based on Breadcrumb edge types.
   - 🚧: Filtering of edges based on Dataview queries.
 
 - Views
