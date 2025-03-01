@@ -3,12 +3,11 @@ import { BreadcrumbGraphProvider } from './src/graph/breadcrumb-graph-provider';
 import './src/utils/breadcrumbs-global-api';
 import { GraphLeaf, GraphQuery } from './src/utils/graph-internals';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BetterGraphViewSettings {
-    edgeFilter: string[];
 }
 
 const DEFAULT_SETTINGS: BetterGraphViewSettings = {
-    edgeFilter: []
 }
 
 const EDGE_OPERATOR_REGEX = /(?<=^| )edge:([^ ]*)/gm;
@@ -18,25 +17,6 @@ export default class BetterGraphViewPlugin extends Plugin {
 
     private getGraphLeaves(): GraphLeaf[] {
         return this.app.workspace.getLeavesOfType("graph") as GraphLeaf[];
-    }
-
-    private async setEdgeFilter(filterByType: string[]) {
-        this.settings.edgeFilter = [...filterByType];
-        await this.saveSettings();
-        this.forceGraphUpdate();
-    }
-
-    private forceGraphUpdate() {
-        BreadcrumbGraphProvider.askBreadcrumbsPluginToRefreshItsData();
-
-        for (const leaf of this.getGraphLeaves()) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const metadataCache = leaf.view.dataEngine.app.metadataCache as any;
-            if (metadataCache?.updateCustomCache) {
-                metadataCache?.updateCustomCache();
-            }
-            leaf.view.update();
-        }
     }
 
     inject_metadataResolver(graphLeaf: GraphLeaf) {
@@ -118,24 +98,6 @@ export default class BetterGraphViewPlugin extends Plugin {
     async onload() {
         await this.loadSettings();
 
-        this.addCommand({
-            id: 'set-edge-filter',
-            name: 'Set edge filter',
-            callback: () => {
-                new SetEdgeFilterModal(this.app, (result) => {
-                    this.setEdgeFilter(result.split(" ").filter(x => x && x.length > 0));
-                }).open();
-            },
-        });
-
-        this.addCommand({
-            id: 'force-graph-update',
-            name: 'Force graph update',
-            callback: () => {
-                this.forceGraphUpdate();
-            },
-        });
-
         this.addSettingTab(new BetterGraphViewSettingsTab(this.app, this));
 
         this.registerEvent(
@@ -194,40 +156,5 @@ class BetterGraphViewSettingsTab extends PluginSettingTab {
         const { containerEl } = this;
 
         containerEl.empty();
-
-        new Setting(containerEl)
-            .setName('Edge Filter')
-            .setDesc('The currently configured edge filter')
-            .addText(text => text
-                .setPlaceholder('Enter the edge filter')
-                .setValue(this.plugin.settings.edgeFilter.join(' '))
-                .onChange(async (value) => {
-                    this.plugin.settings.edgeFilter = value.split(' ').filter(x => x && x.length > 0);
-                    await this.plugin.saveSettings();
-                }));
-    }
-}
-
-class SetEdgeFilterModal extends Modal {
-    constructor(app: App, onSubmit: (newFilter: string) => void) {
-        super(app);
-        this.setTitle('Enter the desired edge filters:');
-
-        let edgeFilter = '';
-        new Setting(this.contentEl)
-            .setName('Edge Filters')
-            .addText((text) =>
-                text.onChange((value) => {
-                    edgeFilter = value;
-                }));
-
-        new Setting(this.contentEl)
-            .addButton(btn => btn
-                .setButtonText('Apply')
-                .setCta()
-                .onClick(() => {
-                    this.close();
-                    onSubmit(edgeFilter);
-                }));
     }
 }
