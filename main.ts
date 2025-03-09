@@ -198,6 +198,42 @@ export default class BetterGraphViewPlugin extends Plugin {
             leaf.view.unload();
             leaf.view.load();
         }
+
+        this.addCommand({
+            id: "reveal-note-in-graph",
+            name: "Reveal current note in graph",
+            callback: () => {
+                const activeFile = this.app.workspace.getActiveFile();
+                const activeId = activeFile?.path;
+                const activeGraph = this.app.workspace.getLeavesOfType("graph")
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .filter((a) => (a as any).activeTime)
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .sort((a, b) => (a as any).activeTime - (b as any).activeTime)
+                    .first() as GraphLeaf | undefined;
+
+                // Do we have both a currently selected file AND a graph
+                // that might contain the corresponding node?
+                if (!activeId || !activeGraph) {
+                    return;
+                }
+
+                const renderer = activeGraph.view.renderer;
+                const nodeToFocus = renderer.nodeLookup[activeId];
+
+                // The active file might not appear within the targeted graph
+                if (!nodeToFocus) {
+                    return;
+                }
+
+                renderer.setPan(
+                    renderer.width * window.devicePixelRatio / 2 - nodeToFocus.x * renderer.scale,
+                    renderer.height * window.devicePixelRatio / 2 - nodeToFocus.y * renderer.scale
+                );
+                renderer.changed();
+                this.app.workspace.setActiveLeaf(activeGraph, { focus: true });
+            },
+        });
     }
 
     onunload() {

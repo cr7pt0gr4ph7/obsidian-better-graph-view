@@ -38,9 +38,19 @@ export interface GraphRenderer {
     setData(data: GraphData): void;
     __setData?: (data: GraphData) => void;
 
+    nodeLookup: Record<string, GraphNodeComponent>;
     nodes: GraphNodeComponent[];
     links: GraphLinkComponent[];
     customGraphProvider?: BreadcrumbGraphProvider;
+
+    setPan(x: number, y: number): void;
+    changed(): void;
+
+    scale: number;
+    width: number;
+    height: number;
+    panX: number;
+    panY: number;
 }
 
 export interface GraphLinkComponent {
@@ -49,6 +59,8 @@ export interface GraphLinkComponent {
 }
 
 export interface GraphNodeComponent {
+    x: number;
+    y: number;
     id: string;
     renderer: GraphRenderer;
     text?: PixiText;
