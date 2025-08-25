@@ -1,5 +1,5 @@
 import { App } from 'obsidian';
-import { BCEdge } from '../utils/breadcrumbs-api';
+import { BCEdgeData, BCEdgeStruct } from '../utils/breadcrumbs-api';
 import '../utils/breadcrumbs-global-api';
 import { GraphNodeId as NodeId } from 'src/utils/graph-internals';
 
@@ -32,13 +32,14 @@ export class BreadcrumbGraphProvider {
         const unresolvedByPage: PageToPageLinks = {};
         this.titleByPageId.clear();
 
-        const edgeFilter = (edge: BCEdge) => {
-            return !filterByType || (!!negate !== !!filterByType.some(x => x === edge.attr.field));
+        const edgeFilter = (edge: BCEdgeStruct) => {
+            return !filterByType || (!!negate !== !!filterByType.some(x => x === edge.edge_type));
         };
 
-        graph.nodes().forEach(source_id => {
+        graph.iterate_nodes(node => {
             const resolved: PageLinks = {};
             const unresolved: PageLinks = {};
+            const source_id = node.path;
 
             const frontmatter = this.app.metadataCache.getCache(source_id)?.frontmatter;
             const titleFromFrontmatter = frontmatter?.node_title ?? frontmatter?.title;
@@ -49,8 +50,8 @@ export class BreadcrumbGraphProvider {
                 }
             }
 
-            graph.get_out_edges(source_id).filter(edgeFilter).forEach(edge => {
-                (edge.target_attr.resolved ? resolved : unresolved)[edge.target_id] = 1;
+            graph.get_outgoing_edges(source_id).to_array().filter(edgeFilter).forEach(edge => {
+                (edge.target_resolved(graph) ? resolved : unresolved)[edge.target_path(graph)] = 1;
             });
 
             resolvedByPage[source_id] = resolved;
