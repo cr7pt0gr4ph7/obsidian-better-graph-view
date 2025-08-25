@@ -9,18 +9,18 @@ export class SetDataHook implements HookForInstance<GraphLeaf> {
     install(on: GraphLeaf) {
         const graphLeaf = on;
         const r = graphLeaf.view.renderer;
-        if (!r._setData) {
-            r._setData = r.setData;
+        if (!r.__setData) {
+            r.__setData = r.setData;
         }
-        r.setData = this.handlerFactory(r._setData);
+        r.setData = this.handlerFactory(r.__setData);
     }
 
     uninstall(on: GraphLeaf) {
         const graphLeaf = on;
         const r = graphLeaf.view.renderer;
-        if (r?._setData) {
-            r.setData = r._setData;
-            delete r._setData;
+        if (r?.__setData) {
+            r.setData = r.__setData;
+            delete r.__setData;
         }
     }
 }
