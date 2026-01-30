@@ -1,13 +1,10 @@
 import { App } from 'obsidian';
-import { BCEdgeData, BCEdgeStruct } from '../utils/breadcrumbs-api';
+import { BCEdgeStruct } from '../utils/breadcrumbs-api';
 import '../utils/breadcrumbs-global-api';
 import { GraphNodeId as NodeId } from 'src/utils/graph-internals';
+import { GraphProvider, PageLinks, PageToPageLinks } from './graph-provider';
 
-type LinkCount = number;
-type PageLinks = Record<NodeId, LinkCount>;
-type PageToPageLinks = Record<NodeId, PageLinks>;
-
-export class BreadcrumbGraphProvider {
+export class BreadcrumbGraphProvider implements GraphProvider {
     resolvedLinks: PageToPageLinks = {}
     unresolvedLinks: PageToPageLinks = {}
     private titleByPageId: Map<NodeId, string> = new Map();

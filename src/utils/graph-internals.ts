@@ -3,7 +3,7 @@
 // by any means (and not intended to be) but complete enough *for us*.
 
 import { App, View, WorkspaceLeaf } from "obsidian";
-import { BreadcrumbGraphProvider } from "src/graph/breadcrumb-graph-provider";
+import { GraphProvider } from "src/graph/graph-provider";
 
 export type GraphNodeId = string;
 export type GraphLinkCount = number;
@@ -41,7 +41,7 @@ export interface GraphRenderer {
     nodeLookup: Record<string, GraphNodeRenderer>;
     nodes: GraphNodeRenderer[];
     links: GraphLinkRenderer[];
-    customGraphProvider?: BreadcrumbGraphProvider;
+    customGraphProvider?: GraphProvider;
 
     setPan(x: number, y: number): void;
     changed(): void;
