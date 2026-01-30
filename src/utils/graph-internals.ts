@@ -38,9 +38,9 @@ export interface GraphRenderer {
     setData(data: GraphData): void;
     __setData?: (data: GraphData) => void;
 
-    nodeLookup: Record<string, GraphNodeComponent>;
-    nodes: GraphNodeComponent[];
-    links: GraphLinkComponent[];
+    nodeLookup: Record<string, GraphNodeRenderer>;
+    nodes: GraphNodeRenderer[];
+    links: GraphLinkRenderer[];
     customGraphProvider?: BreadcrumbGraphProvider;
 
     setPan(x: number, y: number): void;
@@ -53,12 +53,12 @@ export interface GraphRenderer {
     panY: number;
 }
 
-export interface GraphLinkComponent {
+export interface GraphLinkRenderer {
     renderer: GraphRenderer;
     rendered: boolean;
 }
 
-export interface GraphNodeComponent {
+export interface GraphNodeRenderer {
     x: number;
     y: number;
     id: string;

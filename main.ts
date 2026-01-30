@@ -1,7 +1,7 @@
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 import { BreadcrumbGraphProvider } from './src/graph/breadcrumb-graph-provider';
 import './src/utils/breadcrumbs-global-api';
-import { GraphLeaf, GraphLinkComponent, GraphNodeComponent, GraphQuery, GraphRenderer } from './src/utils/graph-internals';
+import { GraphLeaf, GraphLinkRenderer, GraphNodeRenderer, GraphQuery, GraphRenderer } from './src/utils/graph-internals';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BetterGraphViewSettings {
@@ -17,8 +17,8 @@ export default class BetterGraphViewPlugin extends Plugin {
     hasPatchedGraphObjects = false;
     hasPatchedLink = false;
     hasPatchedNode = false;
-    nodePrototype?: GraphNodeComponent;
-    linkPrototype?: GraphLinkComponent;
+    nodePrototype?: GraphNodeRenderer;
+    linkPrototype?: GraphLinkRenderer;
 
     private getGraphLeaves(): GraphLeaf[] {
         return this.app.workspace.getLeavesOfType("graph") as GraphLeaf[];
@@ -36,12 +36,12 @@ export default class BetterGraphViewPlugin extends Plugin {
         const graphView = graphLeaf.view;
         const renderer = graphView.renderer;
         if (!this.hasPatchedNode && renderer.nodes && renderer.nodes.length >= 1) {
-            const proto = Object.getPrototypeOf(renderer.nodes[0]) as GraphNodeComponent;
+            const proto = Object.getPrototypeOf(renderer.nodes[0]) as GraphNodeRenderer;
             if (proto) {
                 proto._getDisplayText || (proto._getDisplayText = proto.getDisplayText);
-                proto.getDisplayText = function (this: GraphNodeComponent) {
+                proto.getDisplayText = function (this: GraphNodeRenderer) {
                     // NOTE: Intentionally not an arrow function,
-                    // so "this" points to the GraphNodeComponent
+                    // so "this" points to the GraphNodeRenderer
                     return this.renderer.customGraphProvider?.getNodeLabel(this.id)
                         ?? this._getDisplayText?.()
                         ?? this.id;
@@ -52,7 +52,7 @@ export default class BetterGraphViewPlugin extends Plugin {
         }
 
         if (!this.hasPatchedLink && renderer.links && renderer.links.length >= 1) {
-            const proto = Object.getPrototypeOf(renderer.links[0]) as GraphLinkComponent;
+            const proto = Object.getPrototypeOf(renderer.links[0]) as GraphLinkRenderer;
             if (proto) {
                 this.linkPrototype = proto;
                 this.hasPatchedLink = true;
@@ -97,7 +97,7 @@ export default class BetterGraphViewPlugin extends Plugin {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const plugin = this;
 
-        // Provide the patched prototypes of GraphNodeComponent and GraphLinkComonent
+        // Provide the patched prototypes of GraphNodeRenderer and GraphLinkRenderer
         // with access to our custom metdata by exposing it on GraphRenderer.
 
         renderer.customGraphProvider = customCache;
