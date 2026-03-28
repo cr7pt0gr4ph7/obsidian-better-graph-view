@@ -6,3 +6,62 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+.yaml-property-widget {
+    color: var(--metadata-input-text-color);
+    font-size: var(--metadata-input-font-size);
+    font-weight: var(--metadata-input-font-weight);
+    padding: var(--metadata-input-padding);
+}
+
+:root {
+    --multi-object-label-width: 6rem;
+}
+
+.multi-object-item {
+    border-bottom: 1px solid var(--color-base-35);
+}
+
+.multi-object-item:last-child {
+    border-bottom: none;
+}
+
+.multi-object-property {
+    --input-border-width: 0;
+    --input-border-width-focus: 0;
+    --input-radius: 0;
+    position: relative;
+    display: flex;
+    align-items: start;
+    flex-direction: row;
+    overflow: hidden;
+    /* padding: var(--metadata-property-padding);
+    border-radius: var(--metadata-property-radius);
+    corner-shape: var(--metadata-property-corner-shape);
+    background-color: var(--metadata-property-background);
+    box-shadow: var(--metadata-property-box-shadow); */
+}
+
+.multi-object-property-key {
+    display: flex;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: var(--metadata-label-font);
+    width: var(--multi-object-label-width);
+    max-width: var(--multi-object-label-width);
+}
+
+.multi-object-property-key {
+    color: var(--metadata-label-text-color);
+    font-size: var(--metadata-label-font-size);
+    font-weight: var(--metadata-label-font-weight);
+    padding: var(--metadata-input-padding);
+}
+
+.multi-object-property-value {
+    color: var(--metadata-input-text-color);
+    font-size: var(--metadata-input-font-size);
+    padding: var(--metadata-input-padding);
+}
