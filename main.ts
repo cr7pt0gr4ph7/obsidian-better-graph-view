@@ -2,6 +2,9 @@ import { App, Plugin, PluginSettingTab } from 'obsidian';
 import { BreadcrumbGraphProvider } from './src/graph/breadcrumb-graph-provider';
 import './src/utils/breadcrumbs-global-api';
 import { GraphLeaf, GraphLinkRenderer, GraphNodeRenderer, GraphQuery, GraphRenderer } from './src/utils/graph-internals';
+import { AppInternals } from 'src/utils/metadata-internals';
+import { YamlPropertyWidgetRegistration } from 'src/utils/yaml-property-widget';
+import { MultiObjectPropertyWidgetRegistration } from 'src/utils/multi-object-property-widget';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BetterGraphViewSettings {
@@ -17,6 +20,7 @@ export default class BetterGraphViewPlugin extends Plugin {
     hasPatchedGraphObjects = false;
     hasPatchedLink = false;
     hasPatchedNode = false;
+    hasRegisteredMetadataTypes = false;
     nodePrototype?: GraphNodeRenderer;
     linkPrototype?: GraphLinkRenderer;
 
@@ -234,6 +238,10 @@ export default class BetterGraphViewPlugin extends Plugin {
                 this.app.workspace.setActiveLeaf(activeGraph, { focus: true });
             },
         });
+
+        (this.app as AppInternals).metadataTypeManager.registeredTypeWidgets["yaml"] = YamlPropertyWidgetRegistration;
+        (this.app as AppInternals).metadataTypeManager.registeredTypeWidgets["multiobject"] = MultiObjectPropertyWidgetRegistration;
+        this.hasRegisteredMetadataTypes = true;
     }
 
     onunload() {
@@ -256,6 +264,12 @@ export default class BetterGraphViewPlugin extends Plugin {
         this.hasPatchedNode = false;
         this.hasPatchedLink = false;
         this.hasPatchedGraphObjects = false;
+
+        if (this.hasRegisteredMetadataTypes) {
+            delete (this.app as AppInternals).metadataTypeManager.registeredTypeWidgets["yaml"];
+            delete (this.app as AppInternals).metadataTypeManager.registeredTypeWidgets["multiobject"]
+            this.hasRegisteredMetadataTypes = false;
+        }
 
         for (const leaf of this.getGraphLeaves()) {
             // Uninstall the proxy from the GraphDataEngine instances
