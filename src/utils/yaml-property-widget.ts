@@ -11,7 +11,7 @@ class YamlPropertyWidgetComponent extends Component {
 
     render() {
         this.containerEl.empty();
-        const pre = this.containerEl.createEl("pre");
+        const pre = this.containerEl.createEl("pre", { cls: "yaml-property-widget" });
         pre.textContent = typeof this.data === "string" ? this.data : JSON.stringify(this.data, null, 2);
     }
 }

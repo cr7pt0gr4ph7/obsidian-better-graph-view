@@ -11,17 +11,20 @@ class MultiObjectPropertyWidgetComponent extends Component {
 
     render() {
         this.containerEl.empty();
-        const propertiesContainer = this.containerEl.createEl("div");
+        const listEl = this.containerEl.createEl("div", { cls: "multi-object-list" });
 
         for (const item of this.data) {
+            const objectEl = listEl.createEl("div", { cls: "multi-object-item" });
+            const propertiesEl = objectEl.createEl("div", { cls: "multi-object-properties" });
+
             for (const key in item) {
                 if (!Object.prototype.hasOwnProperty.call(item, key)) {
                     continue;
                 }
 
                 const value = item[key];
-                const propertyEl = propertiesContainer.createEl("div", { cls: "multi-object-property" });
-                propertyEl.createEl("span", { text: `${key}: `, cls: "multi-object-property-key" });
+                const propertyEl = propertiesEl.createEl("div", { cls: "multi-object-property" });
+                propertyEl.createEl("span", { text: key, cls: "multi-object-property-key" });
                 propertyEl.createEl("span", { text: String(value), cls: "multi-object-property-value" });
             }
         }
@@ -29,7 +32,7 @@ class MultiObjectPropertyWidgetComponent extends Component {
 }
 
 export const MultiObjectPropertyWidgetRegistration: PropertyWidget<MultiObjectData> = {
-    icon: "braces",
+    icon: "list-tree",
     type: "multiobject",
     name(): string { return "Multi Object"; },
     render(containerEl: HTMLElement, data: MultiObjectData, context: PropertyRenderContext): Component {
