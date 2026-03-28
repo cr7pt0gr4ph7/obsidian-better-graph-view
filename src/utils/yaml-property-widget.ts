@@ -190,7 +190,7 @@ class YamlPropertyWidgetComponent extends Component {
 //     render() {
 //         var inputEl = this.inputEl;
 //         // var linkDiv = createDiv("metadata-link-inner");
-//         // if (oO(this.value, linkDiv, this.ctx, this)) {
+//         // if (renderLink(this.value, linkDiv, this.ctx, this)) {
 //         //     ((inputEl = createDiv("metadata-link")).appendChild(linkDiv),
 //         //         inputEl.createDiv("metadata-link-flair", (e) => {
 //         //             return setIcon(e, "lucide-pencil");
