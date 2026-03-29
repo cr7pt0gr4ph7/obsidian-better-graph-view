@@ -60,8 +60,13 @@ If your plugin does not need CSS, delete this file.
     padding: var(--metadata-input-padding);
 }
 
-.multi-object-property-value-inline {
+.multi-object-property-value-text {
     color: var(--metadata-input-text-color);
     font-size: var(--metadata-input-font-size);
     padding: var(--metadata-input-padding);
+}
+
+.multi-object-property-value-array {
+    display: flex;
+    flex-direction: column;
 }

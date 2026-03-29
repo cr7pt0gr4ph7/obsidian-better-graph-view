@@ -178,22 +178,33 @@ class MultiObjectPropertyWidgetComponent extends Component {
                 const value = item[key];
                 const propertyEl = propertiesEl.createEl("div", { cls: "multi-object-property" });
                 propertyEl.createEl("span", { text: key, cls: "multi-object-property-key" });
+                const valueEl = propertyEl.createEl("div", { cls: "multi-object-property-value" });
 
-                const innerLinkDiv = createDiv("metadata-link-inner");
-                if (renderLink(String(value), innerLinkDiv, this.context, this)) {
-                    const valueEl = propertyEl.createEl("div", { cls: "multi-object-property-value" });
-                    const linkDiv = createDiv("metadata-link");
-                    linkDiv.appendChild(innerLinkDiv);
-                    // linkDiv.createDiv("metadata-link-flair", (elem) => setIcon(elem, "lucide-pencil"));
-                    // linkDiv.addEventListener("click", (event: PointerEvent) => {
-                    //     event.defaultPrevented || this.onFocus();
-                    // });
-                    valueEl.appendChild(linkDiv);
+                if (value instanceof Array) {
+                    const arrayEl = valueEl.createEl("div", { cls: "multi-object-property-value-array" });
+                    value.forEach((entry, index) => {
+                        const entryEl = arrayEl.createEl("div", { cls: "multi-object-property-array-entry" });
+                        this.renderSingleValue(entry, entryEl);
+                    });
                 } else {
-                    propertyEl.createEl("span", { text: String(value), cls: "multi-object-property-value multi-object-property-value-inline" });
+                    this.renderSingleValue(value, valueEl);
                 }
-
             }
+        }
+    }
+
+    private renderSingleValue(value: unknown, valueEl: HTMLDivElement) {
+        const innerLinkDiv = createDiv("metadata-link-inner");
+        if (renderLink(String(value), innerLinkDiv, this.context, this)) {
+            const linkDiv = createDiv("metadata-link");
+            linkDiv.appendChild(innerLinkDiv);
+            // linkDiv.createDiv("metadata-link-flair", (elem) => setIcon(elem, "lucide-pencil"));
+            // linkDiv.addEventListener("click", (event: PointerEvent) => {
+            //     event.defaultPrevented || this.onFocus();
+            // });
+            valueEl.appendChild(linkDiv);
+        } else {
+            valueEl.createEl("span", { text: String(value), cls: "multi-object-property-value-text" });
         }
     }
 }
