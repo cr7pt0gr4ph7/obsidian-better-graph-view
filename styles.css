@@ -18,6 +18,20 @@ If your plugin does not need CSS, delete this file.
     --multi-object-label-width: 6rem;
 }
 
+.multi-object-no-value::before {
+    content: attr(data-placeholder);
+    color: var(--text-faint);
+    font-size: var(--metadata-input-font-size);
+    padding: var(--metadata-input-padding);
+}
+
+.multi-object-error-value::before {
+    content: attr(data-placeholder);
+    color: var(--color-red);
+    font-size: var(--metadata-input-font-size);
+    padding: var(--metadata-input-padding);
+}
+
 .multi-object-item {
     border-bottom: 1px solid var(--color-base-35);
 }
