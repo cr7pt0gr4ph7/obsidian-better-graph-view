@@ -224,7 +224,7 @@ class YamlPropertyWidgetComponent extends Component {
 // };
 
 export const YamlPropertyWidgetRegistration: PropertyWidget<unknown> = {
-    icon: "braces",
+    icon: "lucide-braces",
     type: "yaml",
     name(): string { return "YAML"; },
     render(containerEl: HTMLElement, data: unknown, context: PropertyRenderContext): Component {

@@ -210,7 +210,7 @@ class MultiObjectPropertyWidgetComponent extends Component {
 }
 
 export const MultiObjectPropertyWidgetRegistration: PropertyWidget<MultiObjectData> = {
-    icon: "list-tree",
+    icon: "lucide-list-tree",
     type: "multiobject",
     name(): string { return "Multi Object"; },
     render(containerEl: HTMLElement, data: MultiObjectData, context: PropertyRenderContext): Component {
