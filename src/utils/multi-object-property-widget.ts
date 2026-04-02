@@ -1,6 +1,8 @@
 import { Component, Keymap, Menu, setIcon } from "obsidian";
 import { PropertyRenderContext, PropertyWidget } from "./metadata-internals";
 
+declare const i18next: { t: (key: string) => string };
+
 type MultiObjectData = Record<string, unknown>[];
 
 const MarkdownLinkRegex = /^(!?\[)(.*?)(]\(\s*)((<[^>]*?>|[^ "]+?)(\s+([^ ]+|"[^"]+"|'[^']+'|\([^']+\)))?)?(\s*\))$/;
@@ -164,6 +166,16 @@ class MultiObjectPropertyWidgetComponent extends Component {
 
     render() {
         this.containerEl.empty();
+        if (this.data === null || this.data === undefined || (this.data instanceof Array && this.data.length === 0)) {
+            this.containerEl.createEl("span", { attr: { "data-placeholder": i18next.t("properties.label-no-value") }, cls: "multi-object-no-value" });
+            return;
+        }
+
+        if (!(this.data instanceof Array)) {
+            this.containerEl.createEl("span", { attr: { "data-placeholder": i18next.t("properties.label-type-mismatch-warning-generic") }, cls: "multi-object-error-value" });
+            return;
+        }
+
         const listEl = this.containerEl.createEl("div", { cls: "multi-object-list" });
 
         for (const item of this.data) {
@@ -217,6 +229,9 @@ export const MultiObjectPropertyWidgetRegistration: PropertyWidget<MultiObjectDa
         return new MultiObjectPropertyWidgetComponent(containerEl, data, context);
     },
     validate(value: unknown): boolean {
-        return true;
+        if (value === null || value === undefined) {
+            return true;
+        }
+        return value instanceof Array && value.every(item => typeof item === "object" && item !== null);
     }
 };
