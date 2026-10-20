@@ -32,43 +32,9 @@ If your plugin does not need CSS, delete this file.
     padding: var(--metadata-input-padding);
 }
 
-.multi-object-item {
-    border-bottom: 1px solid var(--color-base-35);
-}
-
-.multi-object-item:last-child {
-    border-bottom: none;
-}
-
-.multi-object-property {
-    --input-border-width: 0;
-    --input-border-width-focus: 0;
-    --input-radius: 0;
-    position: relative;
-    display: flex;
-    align-items: start;
-    flex-direction: row;
-    overflow: hidden;
-    /* padding: var(--metadata-property-padding);
-    border-radius: var(--metadata-property-radius);
-    corner-shape: var(--metadata-property-corner-shape);
-    background-color: var(--metadata-property-background);
-    box-shadow: var(--metadata-property-box-shadow); */
-}
-
-.multi-object-property-key {
-    display: flex;
-    align-self: stretch;
-    align-items: flex-start;
-    flex-direction: row;
-    flex-shrink: 0;
-    font-family: var(--metadata-label-font);
-    width: var(--multi-object-label-width);
-    max-width: var(--multi-object-label-width);
-}
-
 .multi-object-property-key {
     color: var(--metadata-label-text-color);
+    font-family: var(--metadata-label-font);
     font-size: var(--metadata-label-font-size);
     font-weight: var(--metadata-label-font-weight);
     padding: var(--metadata-input-padding);
@@ -80,7 +46,152 @@ If your plugin does not need CSS, delete this file.
     padding: var(--metadata-input-padding);
 }
 
-.multi-object-property-value-array {
+/* Styling for the Properties views in the editor & sidepanel */
+
+.metadata-property .multi-object-item {
+    border-bottom: 1px solid var(--color-base-35);
+}
+
+.metadata-property .multi-object-item:last-child {
+    border-bottom: none;
+}
+
+.metadata-property .multi-object-property {
+    --input-border-width: 0;
+    --input-border-width-focus: 0;
+    --input-radius: 0;
+    position: relative;
+    display: flex;
+    align-items: start;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.metadata-property .multi-object-property-key {
+    display: flex;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-shrink: 0;
+    width: var(--multi-object-label-width);
+    max-width: var(--multi-object-label-width);
+}
+
+
+.metadata-property .multi-object-property-value-array {
     display: flex;
     flex-direction: column;
+}
+
+/* Styling for the Bases views */
+
+.bases-table-container .multi-object-list {
+    padding: var(--metadata-input-padding);
+}
+
+.bases-table-container .multi-object-list::before {
+    /* content: "["; */
+    color: var(--color-base-50);
+}
+
+.bases-table-container .multi-object-list::after {
+    /* content: "]"; */
+    color: var(--color-base-50);
+}
+
+.bases-table-container:not(.mod-multiline) .multi-object-item {
+    display: inline;
+}
+
+.bases-table-container:not(.mod-multiline) .multi-object-item::after {
+    content: ", ";
+    color: var(--color-base-90);
+}
+
+.bases-table-container:not(.mod-multiline) .multi-object-item:last-child::after {
+    content: none;
+}
+
+.bases-table-container .multi-object-properties {
+    display: inline;
+}
+
+.bases-table-container .multi-object-properties::before {
+    content: "{";
+    color: var(--color-base-90);
+}
+
+.bases-table-container .multi-object-properties::after {
+    content: "}";
+    color: var(--color-base-90);
+}
+
+.bases-table-container .multi-object-property {
+    display: inline;
+}
+
+.bases-table-container .multi-object-property::after {
+    content: ", ";
+    color: var(--color-base-50);
+}
+
+.bases-table-container .multi-object-property:last-child::after {
+    content: none;
+}
+
+.bases-table-container .multi-object-property-key {
+    display: inline;
+    padding: 0;
+}
+
+.bases-table-container .multi-object-property-key::after {
+    content: ":";
+}
+
+.bases-table-container .multi-object-property-value {
+    display: inline;
+    padding-left: 4px;
+}
+
+.bases-table-container .multi-object-property-value .metadata-link {
+    display: inline-flex;
+    padding: 0;
+}
+
+.bases-table-container .multi-object-property-value-text {
+    display: inline;
+    padding: 0;
+}
+
+.bases-table-container .multi-object-property-value-array {
+    display: inline;
+}
+
+.bases-table-container .multi-object-property-value-array::before {
+    content: "[";
+    color: var(--color-base-60);
+}
+
+.bases-table-container .multi-object-property-value-array::after {
+    content: "]";
+    color: var(--color-base-60);
+}
+
+.bases-table-container .multi-object-property-array-entry {
+    display: inline;
+}
+
+.bases-table-container .multi-object-property-array-entry::after {
+    content: ", ";
+    color: var(--color-base-50);
+}
+
+.bases-table-container .multi-object-property-array-entry:last-child::after {
+    content: none;
+}
+
+.bases-table-container:not(.mod-multiline) .multi-object-list:not(:focus-within) {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
