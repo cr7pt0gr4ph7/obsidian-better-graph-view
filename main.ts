@@ -176,6 +176,11 @@ export default class BetterGraphViewPlugin extends Plugin {
         });
 
         dataEngine.app = appProxy;
+
+        // FIX: Force an update of the search so that our custom query operators
+        //      are recognized when the graph view is freshly opened.
+        dataEngine.requestUpdateSearch.run();
+
         return graphLeaf;
     }
 

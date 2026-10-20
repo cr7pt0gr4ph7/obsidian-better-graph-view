@@ -32,6 +32,7 @@ export interface GraphDataEngine {
     setQuery(query: GraphQuery[]): void;
     _setQuery?: (query: GraphQuery[]) => void;
     render(): void;
+    requestUpdateSearch: (() => void) & { run(): void; cancel(): void; };
 }
 
 export interface GraphRenderer {
